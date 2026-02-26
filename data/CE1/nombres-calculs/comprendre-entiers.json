@@ -1,1 +1,106 @@
+[
+  {
+    "id": "ce1_nombre_qui_suit",
+    "titre": "Le nombre qui suit",
+    "niveaux": ["CE1"],
+    "chapitres": ["10NA"],
+    "description": "Donner le nombre qui vient juste après",
+    "type": "generate",
+    "modeles": [
+      {
+        "patron": "Quel est le nombre qui suit __n__ ?",
+        "n_min": 2,
+        "n_max": 98,
+        "reponse": "n + 1",
+        "hint": "Compte un de plus"
+      }
+    ]
+  },
+  {
+    "id": "ce1_nombre_qui_precede",
+    "titre": "Le nombre qui précède",
+    "niveaux": ["CE1"],
+    "chapitres": ["10NA"],
+    "description": "Donner le nombre qui vient juste avant",
+    "type": "generate",
+    "modeles": [
+      {
+        "patron": "Quel est le nombre qui précède __n__ ?",
+        "n_min": 2,
+        "n_max": 99,
+        "reponse": "n - 1",
+        "hint": "Compte un de moins"
+      }
+    ]
+  },
+  {
+    "id": "ce1_precede_ou_suit",
+    "titre": "Précède ou suit ?",
+    "niveaux": ["CE1"],
+    "chapitres": ["10NA"],
+    "description": "Le nombre qui précède ou celui qui suit (aléatoire)",
+    "type": "generate",
+    "modeles": [
+      {
+        "patron": "Quel est le nombre qui précède __n__ ?",
+        "n_min": 2,
+        "n_max": 99,
+        "reponse": "n - 1",
+        "hint": "Compte un de moins"
+      },
+      {
+        "patron": "Quel est le nombre qui suit __n__ ?",
+        "n_min": 2,
+        "n_max": 98,
+        "reponse": "n + 1",
+        "hint": "Compte un de plus"
+      }
+    ]
+  },
+  {
+    "id": "ce1_nb_elements_precedent",
+    "titre": "Combien de nombres précèdent ?",
+    "niveaux": ["CE1"],
+    "chapitres": ["10NA"],
+    "description": "Compter combien de nombres entiers viennent avant",
+    "type": "generate",
+    "modeles": [
+      {
+        "patron": "Combien de nombres entiers précèdent __n__ ?",
+        "n_min": 1,
+        "n_max": 20,
+        "reponse": "n - 1",
+        "hint": "Liste les nombres avant __n__ : 1, 2, 3..."
+      }
+    ]
+  },
+  {
+    "id": "ce1_nb_collection",
+    "titre": "Nombre dans une collection",
+    "niveaux": ["CE1"],
+    "chapitres": ["10NA"],
+    "description": "Dénombrer une collection d'objets",
+    "type": "collection",
+    "objets": ["🍎","⭐","🔵","🟡","🌸","🐟","🎈","🍭","🦋","🌈"],
+    "n_min": 3,
+    "n_max": 20
+  },
+  {
+    "id": "ce1_entre_deux",
+    "titre": "Nombre entre deux entiers",
+    "niveaux": ["CE1"],
+    "chapitres": ["10NA"],
+    "description": "Trouver le nombre manquant entre deux nombres consécutifs",
+    "type": "generate",
+    "modeles": [
+      {
+        "patron": "__n__ , ___ , __n+2__",
+        "n_min": 1,
+        "n_max": 97,
+        "reponse": "n + 1",
+        "hint": "Quel nombre se place entre __n__ et __n+2__ ?"
+      }
+    ]
+  }
+]
 
