@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathsFlash — Automatismes & Révisions</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<style>
+:root{
+  --blue:#2563eb;--blue-dark:#1d4ed8;--blue-light:#dbeafe;--blue-xlight:#eff6ff;
+  --green:#16a34a;--green-light:#dcfce7;
+  --red:#dc2626;--red-light:#fee2e2;
+  --orange:#ea580c;
+  --text:#0f172a;--text2:#475569;--muted:#94a3b8;
+  --border:#e2e8f0;--bg:#f8fafc;--white:#fff;
+  --radius:14px;--radius-sm:9px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+button{font-family:inherit;cursor:pointer;}
+input{font-family:inherit;}
+
+/* NAV */
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;gap:.75rem;position:sticky;top:0;z-index:200;}
+.nav-logo{width:38px;height:38px;background:var(--blue);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;box-shadow:0 2px 8px rgba(37,99,235,.35);}
+.nav-brand{font-family:'Sora',sans-serif;font-weight:800;font-size:1.05rem;}
+.nav-brand span{color:var(--blue);}
+.nav-sub{font-size:.7rem;color:var(--muted);}
+.nav-back{margin-left:auto;background:none;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.42rem .9rem;font-size:.82rem;font-weight:600;color:var(--text2);display:none;align-items:center;gap:.4rem;transition:all .15s;}
+.nav-back:hover{border-color:var(--blue);color:var(--blue);}
+
+/* PAGES */
+.page{display:none;animation:fadeIn .2s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ACCUEIL */
+.hero{max-width:680px;margin:0 auto;padding:3.5rem 1.5rem 2rem;text-align:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--blue-light);color:var(--blue);border-radius:99px;padding:.3rem .9rem;font-size:.75rem;font-weight:700;margin-bottom:1.1rem;letter-spacing:.02em;}
+.hero h1{font-family:'Sora',sans-serif;font-size:2.8rem;font-weight:900;line-height:1.08;margin-bottom:.9rem;}
+.hero h1 em{color:var(--blue);font-style:normal;}
+.hero p{color:var(--text2);font-size:1rem;line-height:1.7;margin-bottom:2rem;}
+.level-section{max-width:1080px;margin:0 auto;padding:0 1.5rem 3rem;}
+.section-label{font-family:'Sora',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;padding-left:.2rem;}
+.levels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.75rem;margin-bottom:2rem;}
+.lvl-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.1rem .8rem;text-align:center;cursor:pointer;transition:all .18s;}
+.lvl-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.lvl-pill{background:var(--blue-light);color:var(--blue);border-radius:6px;padding:.2rem .5rem;font-size:.7rem;font-weight:700;display:inline-block;margin-bottom:.55rem;}
+.lvl-name{font-family:'Sora',sans-serif;font-weight:700;font-size:.88rem;}
+
+/* INNER */
+.inner{max-width:960px;margin:0 auto;padding:2rem 1.5rem;}
+.bc{font-size:.75rem;color:var(--muted);margin-bottom:.5rem;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;}
+.bc b{color:var(--blue);}
+.page-title{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:.3rem;}
+.page-sub{color:var(--text2);font-size:.9rem;margin-bottom:1.6rem;}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.85rem;}
+.card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.25rem;cursor:pointer;transition:all .18s;}
+.card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.card-icon{font-size:1.6rem;margin-bottom:.5rem;}
+.card-title{font-family:'Sora',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:.25rem;}
+.card-sub{font-size:.75rem;color:var(--text2);line-height:1.5;}
+.card-tag{display:inline-block;background:var(--blue-xlight);color:var(--blue);border-radius:5px;padding:.15rem .45rem;font-size:.68rem;font-weight:700;margin-bottom:.45rem;}
+
+/* CONFIG */
+.config-wrap{max-width:580px;margin:0 auto;padding:2rem 1.5rem;}
+.cfg-block{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin-bottom:1rem;}
+.cfg-block h3{font-family:'Sora',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:1rem;}
+.cfg-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.75rem;}
+.cfg-row:last-child{margin-bottom:0;}
+.cfg-label{font-size:.85rem;color:var(--text2);font-weight:500;}
+.cfg-sel{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.4rem .7rem;font-size:.85rem;outline:none;background:var(--white);font-family:inherit;color:var(--text);min-width:120px;}
+.cfg-sel:focus{border-color:var(--blue);}
+.modes-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem;}
+.mode-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.7rem .4rem;text-align:center;cursor:pointer;transition:all .15s;}
+.mode-btn.selected{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
+.mode-ico{font-size:1.3rem;display:block;margin-bottom:.2rem;}
+.mode-lbl{font-size:.68rem;font-weight:600;display:block;}
+.start-btn{width:100%;background:var(--blue);color:var(--white);border:none;border-radius:var(--radius);padding:1rem;font-size:1rem;font-weight:700;font-family:'Sora',sans-serif;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .18s;box-shadow:0 4px 14px rgba(37,99,235,.3);margin-top:1.2rem;}
+.start-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
+
+/* JEU */
+.game-wrap{max-width:640px;margin:0 auto;padding:1.5rem 1.5rem 2rem;transition:opacity .12s ease;}
+.game-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;gap:.8rem;flex-wrap:wrap;}
+.game-title{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;}
+.game-stats{display:flex;gap:.6rem;}
+.stat-chip{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.35rem .7rem;text-align:center;min-width:52px;}
+.stat-chip .sv{font-family:'Sora',sans-serif;font-weight:800;font-size:.95rem;}
+.stat-chip .sl{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+.prog-bar{background:var(--border);border-radius:99px;height:6px;margin-bottom:1.4rem;overflow:hidden;}
+.prog-fill{background:linear-gradient(90deg,var(--blue),#60a5fa);height:100%;border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1);}
+
+/* TIMER */
+.timer-wrap{display:flex;justify-content:center;margin-bottom:1rem;}
+.timer-ring{position:relative;width:72px;height:72px;}
+.timer-ring svg{transform:rotate(-90deg);}
+.timer-ring circle{fill:none;stroke-width:5;}
+.timer-bg{stroke:var(--border);}
+.timer-fg{stroke:var(--blue);stroke-linecap:round;transition:stroke-dashoffset .9s linear,stroke .3s;}
+.timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:800;font-size:1.1rem;}
+.timer-wrap.warn .timer-fg{stroke:var(--orange);}
+.timer-wrap.danger .timer-fg{stroke:var(--red);}
+.timer-wrap.warn .timer-num,.timer-wrap.danger .timer-num{color:var(--red);}
+
+/* QUESTION */
+.q-card{background:var(--white);border:1.5px solid var(--border);border-radius:18px;padding:2rem 1.5rem;text-align:center;margin-bottom:1.3rem;box-shadow:var(--shadow);min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;}
+.q-num{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.08em;}
+.q-text{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;line-height:1.3;word-break:break-word;}
+.q-hint{font-size:.78rem;color:var(--muted);}
+.ans-zone{display:flex;flex-direction:column;align-items:center;gap:.85rem;}
+
+/* SAISIE */
+.ans-input{width:100%;max-width:260px;border:2px solid var(--border);border-radius:var(--radius);padding:.85rem 1rem;font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;text-align:center;outline:none;transition:border-color .15s,box-shadow .15s;background:var(--white);}
+.ans-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12);}
+.ans-input.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.ans-input.wrong{border-color:var(--red);background:var(--red-light);animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}60%{transform:translateX(8px)}}
+
+/* MCQ */
+.mcq-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;width:100%;max-width:420px;}
+.mcq-btn{background:var(--white);border:2px solid var(--border);border-radius:var(--radius);padding:.85rem .5rem;font-family:'Sora',sans-serif;font-size:1.15rem;font-weight:700;transition:all .13s;min-height:56px;color:var(--text);}
+.mcq-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue);background:var(--blue-xlight);}
+.mcq-btn.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.mcq-btn.wrong{border-color:var(--red);background:var(--red-light);color:var(--red);}
+.mcq-btn:disabled{cursor:default;}
+
+/* VRAI/FAUX */
+.tf-grid{display:flex;gap:.85rem;justify-content:center;}
+.tf-btn{background:var(--white);border:2px solid var(--border);border-radius:var(--radius);padding:1rem 2.2rem;font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;transition:all .15s;min-width:130px;text-align:center;}
+.tf-btn.v:hover:not(:disabled){border-color:var(--green);color:var(--green);background:var(--green-light);}
+.tf-btn.f:hover:not(:disabled){border-color:var(--red);color:var(--red);background:var(--red-light);}
+.tf-btn.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.tf-btn.wrong{border-color:var(--red);background:var(--red-light);color:var(--red);}
+.tf-btn:disabled{cursor:default;}
+
+/* DUEL */
+.duel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1rem;width:100%;max-width:500px;}
+.duel-player{background:var(--white);border:2px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center;}
+.duel-player h4{font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:.5rem;}
+.duel-input{width:100%;border:2px solid var(--border);border-radius:var(--radius-sm);padding:.6rem;font-family:'Sora',sans-serif;font-size:1.3rem;font-weight:700;text-align:center;outline:none;}
+.duel-input:focus{border-color:var(--blue);}
+.duel-input.correct{border-color:var(--green);background:var(--green-light);}
+.duel-input.wrong{border-color:var(--red);background:var(--red-light);}
+
+/* VALIDER */
+.val-btn{background:var(--blue);color:var(--white);border:none;border-radius:var(--radius);padding:.78rem 2rem;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;transition:all .15s;box-shadow:0 2px 8px rgba(37,99,235,.25);}
+.val-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
+.val-btn:disabled{background:#93c5fd;box-shadow:none;transform:none;cursor:default;}
+
+/* FEEDBACK */
+.fb-strip{padding:.65rem 1.2rem;border-radius:var(--radius-sm);font-weight:600;font-size:.9rem;text-align:center;display:none;width:100%;max-width:420px;}
+.fb-strip.show{display:block;}
+.fb-strip.ok{background:var(--green-light);color:var(--green);}
+.fb-strip.ko{background:var(--red-light);color:var(--red);}
+
+/* DIAPORAMA */
+.diapo-overlay{position:fixed;inset:0;background:#0f172a;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
+.diapo-overlay.show{display:flex;}
+.diapo-q{font-family:'Sora',sans-serif;font-size:clamp(2rem,6vw,4.5rem);font-weight:900;color:#fff;text-align:center;max-width:900px;line-height:1.2;animation:diapoIn .25s ease;}
+@keyframes diapoIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.diapo-num{font-size:.9rem;color:#64748b;margin-bottom:1.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
+.diapo-timer{position:absolute;bottom:2rem;font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:#fff;opacity:.4;}
+.diapo-close{position:absolute;top:1.2rem;right:1.5rem;background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:8px;padding:.5rem .9rem;font-size:.82rem;font-weight:600;cursor:pointer;}
+.diapo-hint{font-size:clamp(.8rem,2vw,1rem);color:#64748b;margin-top:1rem;}
+
+/* RÉSULTATS */
+.results-wrap{max-width:540px;margin:0 auto;padding:2rem 1.5rem;}
+.res-card{background:var(--white);border:1.5px solid var(--border);border-radius:20px;padding:2.5rem 2rem;text-align:center;box-shadow:var(--shadow);}
+.res-emoji{font-size:3rem;margin-bottom:.7rem;}
+.res-score{font-family:'Sora',sans-serif;font-size:4rem;font-weight:900;color:var(--blue);line-height:1;}
+.res-total{font-size:1rem;color:var(--text2);margin-top:.2rem;}
+.res-pct{font-size:1.1rem;font-weight:700;margin:.6rem 0 .3rem;}
+.res-msg{font-size:.85rem;color:var(--text2);margin-bottom:1.5rem;}
+.res-bar-wrap{background:var(--border);border-radius:99px;height:10px;margin-bottom:1.5rem;overflow:hidden;}
+.res-bar{background:linear-gradient(90deg,var(--blue),#60a5fa);height:100%;border-radius:99px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+.res-btns{display:flex;flex-direction:column;gap:.6rem;}
+.btn-primary{background:var(--blue);color:var(--white);border:none;border-radius:var(--radius);padding:.82rem 1.5rem;font-family:'Sora',sans-serif;font-size:.92rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.45rem;transition:all .15s;box-shadow:0 2px 8px rgba(37,99,235,.25);}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);}
+.btn-sec{background:var(--white);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:.82rem 1.5rem;font-family:'Sora',sans-serif;font-size:.92rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.45rem;transition:all .15s;}
+.btn-sec:hover{border-color:var(--blue);color:var(--blue);}
+
+/* LOADING / EMPTY */
+.loading{text-align:center;padding:3rem 1rem;color:var(--muted);}
+.spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto .9rem;}
+@keyframes sp{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:3rem 1rem;}
+.empty-ico{font-size:2.5rem;margin-bottom:.7rem;}
+.empty p{color:var(--text2);font-size:.88rem;line-height:1.7;}
+
+@media(max-width:600px){
+  .hero h1{font-size:2rem;}
+  .q-text{font-size:1.5rem;}
+  .modes-grid{grid-template-columns:1fr 1fr;}
+  .mcq-grid{grid-template-columns:1fr 1fr;}
+  .duel-wrap{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">⚡</div>
+  <div>
+    <div class="nav-brand">Maths<span>Flash</span></div>
+    <div class="nav-sub">Automatismes & Révisions</div>
+  </div>
+  <button class="nav-back" id="navBack" onclick="goBack()">← Retour</button>
+</nav>
+
+<!-- ACCUEIL -->
+<div class="page active" id="p-home">
+  <div class="hero">
+    <div class="hero-badge">⚡ Calcul mental · Révisions · Automatismes</div>
+    <h1>Maîtrisez les<br><em>mathématiques</em></h1>
+    <p>Entraînez-vous avec des exercices générés aléatoirement, du CP à la Terminale.</p>
+  </div>
+  <div class="level-section">
+    <div class="section-label">🏫 École primaire</div>
+    <div class="levels-grid" id="grid-ecole"></div>
+    <div class="section-label">📚 Collège</div>
+    <div class="levels-grid" id="grid-college"></div>
+    <div class="section-label">🎓 Lycée</div>
+    <div class="levels-grid" id="grid-lycee"></div>
+  </div>
+</div>
+
+<!-- THÈMES -->
+<div class="page" id="p-themes">
+  <div class="inner">
+    <div class="bc" id="bc-themes"></div>
+    <h2 class="page-title" id="themes-title"></h2>
+    <p class="page-sub">Choisissez un thème</p>
+    <div class="cards-grid" id="themes-grid"></div>
+  </div>
+</div>
+
+<!-- CHAPITRES -->
+<div class="page" id="p-chaps">
+  <div class="inner">
+    <div class="bc" id="bc-chaps"></div>
+    <h2 class="page-title" id="chaps-title"></h2>
+    <p class="page-sub">Choisissez un chapitre</p>
+    <div class="cards-grid" id="chaps-grid"></div>
+  </div>
+</div>
+
+<!-- EXERCICES -->
+<div class="page" id="p-exos">
+  <div class="inner">
+    <div class="bc" id="bc-exos"></div>
+    <h2 class="page-title" id="exos-title"></h2>
+    <p class="page-sub">Choisissez un exercice</p>
+    <div id="exos-content"></div>
+  </div>
+</div>
+
+<!-- CONFIG -->
+<div class="page" id="p-config">
+  <div class="config-wrap">
+    <div class="bc" id="bc-config"></div>
+    <h2 class="page-title" id="cfg-title"></h2>
+    <p class="page-sub" id="cfg-desc"></p>
+    <div class="cfg-block">
+      <h3>🎮 Mode d'exercice</h3>
+      <div class="modes-grid">
+        <div class="mode-btn selected" data-mode="input" onclick="selectMode('input')"><span class="mode-ico">✏️</span><span class="mode-lbl">Écrire</span></div>
+        <div class="mode-btn" data-mode="mcq" onclick="selectMode('mcq')"><span class="mode-ico">🔘</span><span class="mode-lbl">QCM</span></div>
+        <div class="mode-btn" data-mode="tf" onclick="selectMode('tf')"><span class="mode-ico">✅</span><span class="mode-lbl">Vrai/Faux</span></div>
+        <div class="mode-btn" data-mode="diapo" onclick="selectMode('diapo')"><span class="mode-ico">📽️</span><span class="mode-lbl">Diaporama</span></div>
+        <div class="mode-btn" data-mode="duel" onclick="selectMode('duel')"><span class="mode-ico">⚔️</span><span class="mode-lbl">Duel</span></div>
+      </div>
+    </div>
+    <div class="cfg-block">
+      <h3>⚙️ Paramètres</h3>
+      <div class="cfg-row">
+        <span class="cfg-label">Nombre de questions</span>
+        <select class="cfg-sel" id="cfg-count">
+          <option value="5">5</option><option value="10" selected>10</option>
+          <option value="20">20</option><option value="30">30</option><option value="50">50</option>
+        </select>
+      </div>
+      <div class="cfg-row" style="flex-direction:column;align-items:flex-start;gap:.6rem;">
+        <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+          <span class="cfg-label">Durée par question</span>
+          <span id="cfg-timer-label" style="font-family:'Sora',sans-serif;font-weight:700;font-size:.92rem;color:var(--blue);min-width:80px;text-align:right;">Sans limite</span>
+        </div>
+        <input type="range" id="cfg-timer" min="0" max="180" step="1" value="0"
+          style="width:100%;accent-color:var(--blue);cursor:pointer;height:6px;"
+          oninput="updateTimerLabel(this.value)">
+        <div style="display:flex;justify-content:space-between;width:100%;font-size:.68rem;color:var(--muted);">
+          <span>0s</span><span>30s</span><span>1 min</span><span>2 min</span><span>3 min</span>
+        </div>
+      </div>
+    </div>
+    <button class="start-btn" onclick="startGame()">▶ Commencer l'exercice</button>
+  </div>
+</div>
+
+<!-- JEU -->
+<div class="page" id="p-game">
+  <div class="game-wrap" id="game-wrap">
+    <div class="game-header">
+      <div class="game-title" id="g-title"></div>
+      <div class="game-stats">
+        <div class="stat-chip"><div class="sv" id="g-score">0</div><div class="sl">Score</div></div>
+        <div class="stat-chip"><div class="sv" id="g-qnum">1/10</div><div class="sl">Q.</div></div>
+      </div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="g-prog" style="width:0%"></div></div>
+    <div class="timer-wrap" id="timer-wrap" style="display:none">
+      <div class="timer-ring">
+        <svg width="72" height="72" viewBox="0 0 72 72">
+          <circle class="timer-bg" cx="36" cy="36" r="31"/>
+          <circle class="timer-fg" id="timer-circle" cx="36" cy="36" r="31" stroke-dasharray="194.8" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-num" id="timer-num">—</div>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-num" id="g-qnum2"></div>
+      <div class="q-text" id="g-q">Chargement…</div>
+      <div class="q-hint" id="g-hint"></div>
+    </div>
+    <div class="ans-zone" id="g-ans"></div>
+    <div class="fb-strip" id="g-fb"></div>
+  </div>
+</div>
+
+<!-- RÉSULTATS -->
+<div class="page" id="p-results">
+  <div class="results-wrap">
+    <div class="res-card">
+      <div class="res-emoji" id="r-emoji"></div>
+      <div class="res-score" id="r-score"></div>
+      <div class="res-total" id="r-total"></div>
+      <div class="res-pct" id="r-pct"></div>
+      <div class="res-msg" id="r-msg"></div>
+      <div class="res-bar-wrap"><div class="res-bar" id="r-bar" style="width:0%"></div></div>
+      <div class="res-btns">
+        <button class="btn-primary" onclick="startGame()">🔄 Recommencer</button>
+        <button class="btn-sec" onclick="goto('p-exos')">📚 Autre exercice</button>
+        <button class="btn-sec" onclick="goto('p-home')">🏠 Accueil</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIAPORAMA OVERLAY -->
+<div class="diapo-overlay" id="diapo-overlay">
+  <button class="diapo-close" onclick="closeDiapo()">✕ Quitter</button>
+  <div class="diapo-num" id="diapo-num"></div>
+  <div class="diapo-q" id="diapo-q"></div>
+  <div class="diapo-hint" id="diapo-hint"></div>
+  <div class="diapo-timer" id="diapo-timer"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   STRUCTURE
+══════════════════════════════════════════════ */
+const STRUCT = {
+  "11":{"nom":"CP","section":"ecole","themes":{"11N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"11NA":"Comprendre les entiers","11NB":"Lire, écrire, représenter","11NC":"Résoudre des problèmes","11ND":"Calculer avec des entiers"}},"11M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"11MA":"Longueurs","11MB":"Masses","11MC":"Durées"}},"11G":{"nom":"Géométrie","icon":"📐","chapitres":{"11GA":"Se repérer","11GB":"Solides","11GC":"Figures planes"}}}},
+  "10":{"nom":"CE1","section":"ecole","themes":{"10N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"10NA":"Nombres entiers","10NB":"Représenter des entiers","10NC":"Résoudre des problèmes","10ND":"Faits numériques","10NE":"Calcul mental","10NF":"Calcul en ligne","10NG":"Calcul en posé"}},"10M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"10MA":"Longueurs","10MB":"Masses","10MC":"Durées","10MD":"Contenances"}},"10G":{"nom":"Géométrie","icon":"📐","chapitres":{"10GA":"Se repérer","10GB":"Solides","10GC":"Figures planes"}}}},
+  "9":{"nom":"CE2","section":"ecole","themes":{"9N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"9NA":"Nombres entiers","9NB":"Représenter des entiers","9NC":"Nombres décimaux","9ND":"Faits numériques","9NE":"Calcul mental","9NF":"Calcul en ligne","9NG":"Calcul en posé","9NH":"Résoudre des problèmes"}},"9M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"9MA":"Longueurs","9MB":"Masses","9MC":"Durées","9MD":"Contenances"}},"9G":{"nom":"Géométrie","icon":"📐","chapitres":{"9GA":"Se repérer","9GB":"Solides","9GC":"Figures planes"}}}},
+  "8":{"nom":"CM1","section":"ecole","themes":{"8N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"8NA":"Grands entiers","8NB":"Fractions","8NC":"Décimaux","8ND":"Calculer entiers","8NE":"Calculer décimaux","8NF":"Résoudre","8NN":"Faits numériques"}},"8M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"8MA":"Longueurs","8MB":"Aires","8MC":"Durées","8MD":"Volumes","8ME":"Angles"}},"8G":{"nom":"Géométrie","icon":"📐","chapitres":{"8GA":"Se repérer","8GB":"Solides","8GC":"Figures planes","8GD":"Relations géométriques"}}}},
+  "7":{"nom":"CM2","section":"ecole","themes":{"7N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"7NA":"Grands entiers","7NB":"Fractions","7NC":"Décimaux","7ND":"Calculer entiers","7NE":"Calculer décimaux","7NF":"Résoudre","7NN":"Faits numériques"}},"7M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"7MA":"Longueurs","7MB":"Aires","7MC":"Durées","7MD":"Volumes","7ME":"Angles","7MG":"Proportionnalité"}},"7G":{"nom":"Géométrie","icon":"📐","chapitres":{"7GA":"Se repérer","7GB":"Solides","7GC":"Figures planes","7GD":"Relations géométriques"}}}},
+  "6":{"nom":"6e","section":"college","themes":{"6N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"6NA":"Grands entiers","6NB":"Fractions","6NC":"Décimaux","6ND":"Calculer entiers","6NE":"Calculer décimaux","6NF":"Résoudre","6NN":"Faits numériques"}},"6D":{"nom":"Données et probabilités","icon":"📊","chapitres":{"6DA":"Gestion de données"}},"6M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"6MA":"Longueurs, masses","6MB":"Durées","6MC":"Aires","6MD":"Volumes","6ME":"Angles"}},"6G":{"nom":"Géométrie","icon":"📐","chapitres":{"6GA":"Se repérer","6GB":"Solides","6GC":"Figures planes","6GD":"Relations géométriques"}}}},
+  "5":{"nom":"5e","section":"college","themes":{"5N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"5NA":"Connaissance des nombres","5NB":"Comparaison","5NC":"Calculer","5ND":"Divisibilité","5NE":"Calcul littéral"}},"5D":{"nom":"Données et fonctions","icon":"📊","chapitres":{"5DA":"Traiter des données","5DB":"Probabilités","5DC":"Proportionnalité","5DD":"Notion de fonction"}},"5M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"5MA":"Calculs de grandeurs","5MB":"Transformations"}},"5G":{"nom":"Géométrie","icon":"📐","chapitres":{"5GA":"Espace","5GB":"Démontrer","5GT":"Transformations","5GR":"Se repérer"}}}},
+  "4":{"nom":"4e","section":"college","themes":{"4N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"4NA":"Connaissance des nombres","4NB":"Comparaison","4NC":"Calculer","4ND":"Divisibilité","4NE":"Calcul littéral"}},"4D":{"nom":"Données et fonctions","icon":"📊","chapitres":{"4DA":"Traiter des données","4DB":"Probabilités","4DC":"Proportionnalité","4DD":"Notion de fonction"}},"4M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"4MA":"Calculs de grandeurs","4MB":"Transformations"}},"4G":{"nom":"Géométrie","icon":"📐","chapitres":{"4GA":"Espace","4GB":"Démontrer","4GR":"Repérage"}}}},
+  "3":{"nom":"3e","section":"college","themes":{"3N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"3NA":"Connaissance des nombres","3NB":"Calculer","3NC":"Divisibilité","3ND":"Calcul littéral"}},"3D":{"nom":"Données et fonctions","icon":"📊","chapitres":{"3DA":"Traiter des données","3DB":"Probabilités","3DC":"Proportionnalité","3DD":"Notion de fonction"}},"3M":{"nom":"Grandeurs et mesures","icon":"📏","chapitres":{"3MA":"Calculs","3MB":"Transformations"}},"3G":{"nom":"Géométrie","icon":"📐","chapitres":{"3GA":"Espace","3GB":"Démontrer","3GR":"Repérage"}}}},
+  "2":{"nom":"2nde","section":"lycee","themes":{"2N":{"nom":"Nombres et calculs","icon":"🔢","chapitres":{"2N1":"Nombres réels","2N2":"Multiples et diviseurs","2N3":"Calcul littéral"}},"2D":{"nom":"Statistiques et probabilités","icon":"📊","chapitres":{"2D1":"Statistique descriptive","2D2":"Probabilités","2D3":"Échantillonnage"}},"2G":{"nom":"Géométrie","icon":"📐","chapitres":{"2G1":"Vecteurs du plan","2G2":"Problèmes de géométrie","2G3":"Droites du plan"}},"2F":{"nom":"Fonctions","icon":"📈","chapitres":{"2F1":"Fonctions de référence","2F2":"Représentations","2F3":"Variations et extremums"}}}},
+  "G":{"nom":"1re Gén","section":"lycee","themes":{"GL":{"nom":"Algèbre","icon":"🔢","chapitres":{"GL1":"Suites","GL2":"Polynômes du second degré"}},"GA":{"nom":"Analyse","icon":"📈","chapitres":{"GA1":"Dérivation","GA2":"Variations et courbes","GA3":"Exponentielle","GA4":"Trigonométrie","GA5":"Second degré"}},"GG":{"nom":"Géométrie","icon":"📐","chapitres":{"GG1":"Vecteurs et produit scalaire","GG2":"Géométrie repérée"}},"GS":{"nom":"Probabilités","icon":"🎲","chapitres":{"GS1":"Probabilités conditionnelles","GS2":"Variables aléatoires"}}}},
+  "K":{"nom":"1/T Tech","section":"lycee","themes":{"KL":{"nom":"Algèbre","icon":"🔢","chapitres":{"KL1":"Suites","KL2":"Second degré"}},"KA":{"nom":"Analyse","icon":"📈","chapitres":{"KA1":"Dérivation","KA2":"Variations","KA5":"Second degré"}},"Ko":{"nom":"Automatismes","icon":"⚡","chapitres":{"Ko1":"Calculs numériques","Ko2":"Calcul littéral","Ko3":"Probabilités","Ko4":"Fonctions"}},"KS":{"nom":"Probabilités","icon":"🎲","chapitres":{"KS1":"Probabilités conditionnelles","KS2":"Variables aléatoires","KS3":"Arbres de probabilités"}}}},
+  "T":{"nom":"Terminale","section":"lycee","themes":{"TC":{"nom":"Nombres complexes","icon":"🔢","chapitres":{"TC1":"Point algébrique","TC2":"Point géométrique","TC3":"Trigonométrie","TC4":"Équations polynomiales"}},"TN":{"nom":"Analyse","icon":"📈","chapitres":{"TN1":"Suites","TN2":"Limites","TN3":"Dérivation","TN4":"Continuité","TN5":"Logarithme","TN6":"Sinus et cosinus","TN7":"Primitives","TN8":"Calcul intégral"}},"TP":{"nom":"Probabilités","icon":"🎲","chapitres":{"TP1":"Bernoulli","TP2":"Sommes de variables","TP3":"Loi des grands nombres"}},"TG":{"nom":"Géométrie","icon":"📐","chapitres":{"TGC":"Dénombrement","TGV":"Vecteurs et plans","TGO":"Orthogonalité","TGR":"Équations cartésiennes"}}}}
+};
+const LEVEL_ORDER=['11','10','9','8','7','6','5','4','3','2','G','K','T'];
+
+/* ══════════════════════════════════════════════
+   EXERCICES — FORMAT SIMPLE
+   Structure d'un exercice :
+   {
+     id: "identifiant_unique",
+     titre: "Nom affiché",
+     niveaux: ["6","7"],          // niveaux concernés
+     chapitres: ["6ND","7ND"],    // chapitres concernés
+     description: "Courte description",
+     generate: function() {
+       // Générer les variables aléatoires
+       // Retourner :
+       return {
+         question: "Texte ou LaTeX de la question",
+         reponse: 42,              // valeur attendue (nombre ou texte)
+         reponseAffichee: "42",    // texte affiché dans le feedback
+         hint: "Conseil optionnel" // facultatif
+       };
+     }
+   }
+
+   Pour Vrai/Faux, retourner reponse: true ou false
+   La question doit alors être une affirmation.
+══════════════════════════════════════════════ */
+const EXERCICES = {
+  // ═══ LES EXERCICES SERONT AJOUTÉS ICI ═══
+  // Exemple (commenté) :
+  //
+  // "tables_multi": {
+  //   id: "tables_multi",
+  //   titre: "Tables de multiplication",
+  //   niveaux: ["6","7","8"],
+  //   chapitres: ["6ND","7ND","8ND"],
+  //   description: "Calculer le produit de deux entiers entre 2 et 9",
+  //   generate() {
+  //     const a = rand(2,9), b = rand(2,9);
+  //     return {
+  //       question: `${a} \\times ${b} = ?`,
+  //       reponse: a*b,
+  //       reponseAffichee: String(a*b)
+  //     };
+  //   }
+  // },
+};
+
+/* ══════════════════════════════════════════════
+   UTILITAIRES
+══════════════════════════════════════════════ */
+function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function randFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function renderKatex(el, text){
+  if(!window.katex){ el.textContent=text; return; }
+  try{ katex.render(String(text), el, {throwOnError:false, displayMode:false, output:'html'}); }
+  catch(e){ el.textContent=text; }
+}
+
+/* ══════════════════════════════════════════════
+   ÉTAT GLOBAL
+══════════════════════════════════════════════ */
+let navStack=[];
+let cur={ levelId:null, themeId:null, chapId:null, exoId:null, mode:'input', count:10, timer:0 };
+let game={ qs:[], idx:0, score:0, answered:false };
+let timerInt=null, timerLeft=0;
+let diapoInt=null, diapoIdx=0, diapoQs=[];
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+function goto(pageId, push=true){
+  const active = document.querySelector('.page.active');
+  if(push && active) navStack.push(active.id);
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.getElementById('navBack').style.display = pageId==='p-home'?'none':'flex';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function goBack(){
+  stopTimer();
+  if(!navStack.length) return;
+  const prev=navStack.pop();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(prev).classList.add('active');
+  document.getElementById('navBack').style.display = prev==='p-home'?'none':'flex';
+}
+
+/* ══════════════════════════════════════════════
+   ACCUEIL
+══════════════════════════════════════════════ */
+function renderHome(){
+  ['ecole','college','lycee'].forEach(sec=>{
+    const g=document.getElementById('grid-'+sec);
+    g.innerHTML=LEVEL_ORDER.filter(k=>STRUCT[k]&&STRUCT[k].section===sec).map(k=>{
+      const l=STRUCT[k];
+      return `<div class="lvl-card" onclick="selectLevel('${k}')">
+        <div class="lvl-pill">${l.nom}</div>
+        <div class="lvl-name">${l.nom}</div>
+      </div>`;
+    }).join('');
+  });
+}
+
+/* ══════════════════════════════════════════════
+   SÉLECTIONS
+══════════════════════════════════════════════ */
+function selectLevel(id){
+  cur.levelId=id;
+  const lvl=STRUCT[id];
+  document.getElementById('bc-themes').innerHTML=`<b>${lvl.nom}</b>`;
+  document.getElementById('themes-title').textContent=lvl.nom;
+  document.getElementById('themes-grid').innerHTML=Object.entries(lvl.themes).map(([tid,th])=>`
+    <div class="card" onclick="selectTheme('${tid}')">
+      <div class="card-icon">${th.icon||'📚'}</div>
+      <div class="card-title">${th.nom}</div>
+      <div class="card-sub">${Object.keys(th.chapitres).length} chapitre(s)</div>
+    </div>`).join('');
+  goto('p-themes');
+}
+
+function selectTheme(tid){
+  cur.themeId=tid;
+  const lvl=STRUCT[cur.levelId], th=lvl.themes[tid];
+  document.getElementById('bc-chaps').innerHTML=`${lvl.nom} › <b>${th.nom}</b>`;
+  document.getElementById('chaps-title').textContent=th.nom;
+  document.getElementById('chaps-grid').innerHTML=Object.entries(th.chapitres).map(([cid,cnom])=>`
+    <div class="card" onclick="selectChap('${cid}')">
+      <div class="card-tag">${cid}</div>
+      <div class="card-title">${cnom}</div>
+    </div>`).join('');
+  goto('p-chaps');
+}
+
+/* ══════════════════════════════════════════════
+   MAPPING chapitre → fichier JSON
+   Ajoutez ici chaque nouveau fichier créé
+══════════════════════════════════════════════ */
+const JSON_MAP = {
+  "10NA": "data/CE1/nombres-calculs/comprendre-entiers.json"
+  // Exemples pour la suite :
+  // "10NB": "data/CE1/nombres-calculs/representer-entiers.json",
+  // "9NA":  "data/CE2/nombres-calculs/nombres-entiers.json",
+};
+
+/* Cache des exercices chargés depuis JSON */
+const JSON_CACHE = {};
+
+async function loadExosForChap(chapId){
+  const url = JSON_MAP[chapId];
+  if(!url) return [];
+  if(JSON_CACHE[chapId]) return JSON_CACHE[chapId];
+  try {
+    const res = await fetch(url);
+    if(!res.ok) return [];
+    const data = await res.json();
+    // Ajoute une fonction generate() dynamique à chaque exercice JSON
+    data.forEach(ex => {
+      if(!ex.generate) ex.generate = () => generateFromJSON(ex);
+      EXERCICES[ex.id] = ex;
+    });
+    JSON_CACHE[chapId] = data;
+    return data;
+  } catch(e) {
+    console.warn('Erreur chargement JSON:', url, e);
+    return [];
+  }
+}
+
+/* Génère une question à partir d'un exercice JSON */
+function generateFromJSON(ex){
+  if(ex.type === 'collection'){
+    const n = rand(ex.n_min, ex.n_max);
+    const objet = randFrom(ex.objets);
+    return {
+      question: `Combien y a-t-il de ${objet} ?\n${objet.repeat(n)}`,
+      reponse: n,
+      reponseAffichee: String(n),
+      hint: "Compte chaque objet un par un"
+    };
+  }
+  // type "generate" : on pioche un modèle au hasard
+  const modele = randFrom(ex.modeles);
+  const n = rand(modele.n_min, modele.n_max);
+  const reponse = eval(modele.reponse.replace(/n/g, n));
+  const question = modele.patron
+    .replace(/__n\+2__/g, n+2)
+    .replace(/__n\+1__/g, n+1)
+    .replace(/__n-1__/g, n-1)
+    .replace(/__n__/g, n);
+  const hint = (modele.hint||'')
+    .replace(/__n\+2__/g, n+2)
+    .replace(/__n\+1__/g, n+1)
+    .replace(/__n-1__/g, n-1)
+    .replace(/__n__/g, n);
+  return { question, reponse, reponseAffichee: String(reponse), hint };
+}
+
+async function selectChap(chapId){
+  cur.chapId=chapId;
+  const lvl=STRUCT[cur.levelId];
+  let chapNom='';
+  for(const th of Object.values(lvl.themes)){
+    if(th.chapitres[chapId]){ chapNom=th.chapitres[chapId]; break; }
+  }
+  document.getElementById('bc-exos').innerHTML=`${lvl.nom} › <b>${chapNom}</b>`;
+  document.getElementById('exos-title').textContent=chapNom;
+  const cont=document.getElementById('exos-content');
+
+  // Affiche un chargement le temps de fetcher le JSON
+  cont.innerHTML=`<div class="loading"><div class="spin"></div>Chargement…</div>`;
+  goto('p-exos');
+
+  await loadExosForChap(chapId);
+
+  const exos=[
+    ...Object.values(EXERCICES).filter(e=>e.chapitres&&e.chapitres.includes(chapId))
+  ];
+
+  if(!exos.length){
+    cont.innerHTML=`<div class="empty"><div class="empty-ico">📭</div><p>Aucun exercice disponible pour ce chapitre.<br>Les exercices seront ajoutés prochainement !</p></div>`;
+  } else {
+    cont.innerHTML=`<div class="cards-grid">${exos.map(e=>`
+      <div class="card" onclick="openConfig('${e.id}')">
+        <div class="card-tag">${e.id}</div>
+        <div class="card-title">${e.titre}</div>
+        ${e.description?`<div class="card-sub">${e.description}</div>`:''}
+      </div>`).join('')}</div>`;
+  }
+}
+
+function openConfig(exoId){
+  cur.exoId=exoId;
+  const ex=EXERCICES[exoId];
+  document.getElementById('bc-config').innerHTML=`<b>${ex.titre}</b>`;
+  document.getElementById('cfg-title').textContent=ex.titre;
+  document.getElementById('cfg-desc').textContent=ex.description||'';
+  selectMode('input');
+  goto('p-config');
+}
+
+function selectMode(mode){
+  cur.mode=mode;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('selected',b.dataset.mode===mode));
+}
+
+function updateTimerLabel(val){
+  val = parseInt(val);
+  let label;
+  if(val === 0) label = 'Sans limite';
+  else if(val < 60) label = `${val} s`;
+  else if(val === 60) label = '1 min';
+  else if(val < 120) label = `1 min ${val-60} s`;
+  else if(val === 120) label = '2 min';
+  else if(val < 180) label = `2 min ${val-120} s`;
+  else label = '3 min';
+  document.getElementById('cfg-timer-label').textContent = label;
+}
+
+/* ══════════════════════════════════════════════
+   DÉMARRER LE JEU
+══════════════════════════════════════════════ */
+function startGame(){
+  stopTimer();
+  cur.count=parseInt(document.getElementById('cfg-count').value);
+  cur.timer=parseInt(document.getElementById('cfg-timer').value);
+  const ex=EXERCICES[cur.exoId];
+  const qs=[];
+  for(let i=0;i<cur.count;i++){
+    try{ qs.push(ex.generate()); }
+    catch(e){ qs.push({question:'Erreur', reponse:0, reponseAffichee:'0'}); }
+  }
+  game={qs, idx:0, score:0, answered:false};
+  document.getElementById('g-title').textContent=ex.titre;
+  if(cur.mode==='diapo'){ startDiapo(qs); return; }
+  goto('p-game');
+  showQuestion();
+}
+
+/* ══════════════════════════════════════════════
+   AFFICHER UNE QUESTION (= nouvelle "page")
+══════════════════════════════════════════════ */
+function showQuestion(){
+  game.answered=false;
+  stopTimer();
+  const q=game.qs[game.idx], total=game.qs.length, idx=game.idx;
+
+  // Simuler un changement de page pour tracking publicitaire futur
+  history.replaceState({q:idx+1},'',`#q${idx+1}`);
+
+  document.getElementById('g-score').textContent=game.score;
+  document.getElementById('g-qnum').textContent=`${idx+1}/${total}`;
+  document.getElementById('g-qnum2').textContent=`Question ${idx+1} sur ${total}`;
+  document.getElementById('g-prog').style.width=`${idx/total*100}%`;
+  document.getElementById('g-fb').className='fb-strip';
+
+  const qEl=document.getElementById('g-q');
+  qEl.textContent='';
+  try{ renderKatex(qEl, q.question); }catch(e){ qEl.textContent=q.question; }
+  document.getElementById('g-hint').textContent=q.hint||'';
+
+  buildAnswerZone(q);
+
+  if(cur.timer>0){
+    document.getElementById('timer-wrap').style.display='flex';
+    startTimer(cur.timer);
+  } else {
+    document.getElementById('timer-wrap').style.display='none';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   ZONES DE RÉPONSE
+══════════════════════════════════════════════ */
+function buildAnswerZone(q){
+  const area=document.getElementById('g-ans');
+  area.innerHTML='';
+  if(cur.mode==='tf'){
+    const d=document.createElement('div'); d.className='tf-grid';
+    ['Vrai','Faux'].forEach(lbl=>{
+      const b=document.createElement('button');
+      b.className='tf-btn '+(lbl==='Vrai'?'v':'f');
+      b.textContent=lbl==='Vrai'?'✓ Vrai':'✗ Faux';
+      b.onclick=()=>checkTF(b,lbl==='Vrai',q.reponse===true||q.reponse==='vrai'||q.reponse==='true');
+      d.appendChild(b);
+    });
+    area.appendChild(d);
+  } else if(cur.mode==='mcq'){
+    const choices=buildChoices(q.reponse);
+    const grid=document.createElement('div'); grid.className='mcq-grid';
+    choices.forEach(c=>{
+      const b=document.createElement('button'); b.className='mcq-btn';
+      try{ renderKatex(b,String(c)); }catch(e){ b.textContent=String(c); }
+      b.onclick=()=>checkMCQ(b,c,q.reponse);
+      grid.appendChild(b);
+    });
+    area.appendChild(grid);
+  } else if(cur.mode==='duel'){
+    const wrap=document.createElement('div'); wrap.className='duel-wrap';
+    [0,1].forEach(pi=>{
+      const div=document.createElement('div'); div.className='duel-player';
+      div.innerHTML=`<h4>${pi===0?'⚔️ Joueur 1':'⚔️ Joueur 2'}</h4>`;
+      const inp=document.createElement('input');
+      inp.className='duel-input'; inp.type='text'; inp.placeholder='?'; inp.id=`duel-inp-${pi}`;
+      inp.onkeydown=e=>{ if(e.key==='Enter') checkDuel(pi,inp.value,q); };
+      div.appendChild(inp); wrap.appendChild(div);
+    });
+    area.appendChild(wrap);
+    setTimeout(()=>document.getElementById('duel-inp-0')?.focus(),80);
+  } else {
+    const inp=document.createElement('input');
+    inp.className='ans-input'; inp.type='text'; inp.placeholder='?'; inp.id='mainInput';
+    inp.onkeydown=e=>{ if(e.key==='Enter') validate(); };
+    area.appendChild(inp);
+    const btn=document.createElement('button');
+    btn.className='val-btn'; btn.textContent='Valider ✓'; btn.id='valBtn';
+    btn.onclick=validate;
+    area.appendChild(btn);
+    setTimeout(()=>inp.focus(),80);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   VÉRIFICATION
+══════════════════════════════════════════════ */
+function isOk(user,correct){
+  const u=String(user).trim().replace(',','.');
+  const c=String(correct).trim().replace(',','.');
+  if(u.toLowerCase()===c.toLowerCase()) return true;
+  const un=parseFloat(u), cn=parseFloat(c);
+  if(!isNaN(un)&&!isNaN(cn)) return Math.abs(un-cn)<0.001;
+  return false;
+}
+
+function validate(){
+  if(game.answered) return;
+  const inp=document.getElementById('mainInput');
+  if(!inp||!inp.value.trim()) return;
+  const q=game.qs[game.idx];
+  const ok=isOk(inp.value,q.reponse);
+  game.answered=true;
+  if(ok){ inp.classList.add('correct'); game.score++; showFb(true); }
+  else{ inp.classList.add('wrong'); showFb(false,q); }
+  document.getElementById('valBtn').disabled=true;
+  stopTimer();
+  setTimeout(nextQ,1400);
+}
+
+function checkMCQ(btn,chosen,correct){
+  if(game.answered) return;
+  game.answered=true;
+  btn.parentElement.querySelectorAll('.mcq-btn').forEach(b=>b.disabled=true);
+  const ok=isOk(chosen,correct);
+  if(ok){ btn.classList.add('correct'); game.score++; showFb(true); }
+  else{
+    btn.classList.add('wrong');
+    btn.parentElement.querySelectorAll('.mcq-btn').forEach(b=>{
+      if(isOk(b.textContent||b.innerText,correct)) b.classList.add('correct');
+    });
+    showFb(false,game.qs[game.idx]);
+  }
+  stopTimer(); setTimeout(nextQ,1300);
+}
+
+function checkTF(btn,userVal,correctVal){
+  if(game.answered) return;
+  game.answered=true;
+  btn.parentElement.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=userVal===correctVal;
+  if(ok){ btn.classList.add('correct'); game.score++; showFb(true); }
+  else{ btn.classList.add('wrong'); showFb(false,game.qs[game.idx]); }
+  stopTimer(); setTimeout(nextQ,1300);
+}
+
+function checkDuel(pi,val,q){
+  const inp=document.getElementById(`duel-inp-${pi}`);
+  if(!inp||inp.disabled) return;
+  if(isOk(val,q.reponse)){
+    inp.classList.add('correct');
+    const other=document.getElementById(`duel-inp-${pi===0?1:0}`);
+    if(other) other.disabled=true;
+    game.score++; game.answered=true;
+    showFb(true); stopTimer(); setTimeout(nextQ,1400);
+  } else {
+    inp.classList.add('wrong'); inp.disabled=true;
+    const other=document.getElementById(`duel-inp-${pi===0?1:0}`);
+    if(other&&other.disabled){ game.answered=true; showFb(false,q); stopTimer(); setTimeout(nextQ,1400); }
+  }
+}
+
+function showFb(ok,q=null){
+  const fb=document.getElementById('g-fb');
+  if(ok){ fb.textContent='✅ Bonne réponse !'; fb.className='fb-strip ok show'; }
+  else{ fb.textContent=`❌ Réponse : ${q?String(q.reponseAffichee??q.reponse??''):''}`;  fb.className='fb-strip ko show'; }
+}
+
+function buildChoices(correct){
+  const c=parseFloat(correct);
+  const s=new Set([String(correct)]);
+  const range=Math.max(2,Math.abs(c)*.5,4);
+  let t=0;
+  while(s.size<4&&t<300){
+    t++;
+    let v=Number.isInteger(c)?c+rand(-Math.ceil(range),Math.ceil(range)):Math.round((c+(Math.random()-.5)*range*2)*100)/100;
+    if(!isOk(v,correct)) s.add(String(v));
+  }
+  return [...s].sort(()=>Math.random()-.5);
+}
+
+/* ══════════════════════════════════════════════
+   TIMER
+══════════════════════════════════════════════ */
+function startTimer(seconds){
+  timerLeft=seconds;
+  const circ=document.getElementById('timer-circle');
+  const numEl=document.getElementById('timer-num');
+  const wrap=document.getElementById('timer-wrap');
+  const C=194.8;
+  circ.style.strokeDashoffset=0; numEl.textContent=seconds; wrap.className='timer-wrap';
+  timerInt=setInterval(()=>{
+    timerLeft--;
+    numEl.textContent=timerLeft;
+    circ.style.strokeDashoffset=C*(1-timerLeft/seconds);
+    const p=timerLeft/seconds;
+    wrap.className='timer-wrap'+(p<=.25?' danger':p<=.5?' warn':'');
+    if(timerLeft<=0){
+      stopTimer();
+      if(!game.answered){ game.answered=true; showFb(false,game.qs[game.idx]); setTimeout(nextQ,1200); }
+    }
+  },1000);
+}
+function stopTimer(){ if(timerInt){ clearInterval(timerInt); timerInt=null; } }
+
+/* ══════════════════════════════════════════════
+   DIAPORAMA
+══════════════════════════════════════════════ */
+function startDiapo(qs){
+  diapoIdx=0; diapoQs=qs;
+  document.getElementById('diapo-overlay').classList.add('show');
+  showDiapoQ();
+}
+function showDiapoQ(){
+  if(diapoIdx>=diapoQs.length){ closeDiapo(); showResultsDirect(); return; }
+  clearInterval(diapoInt);
+  const q=diapoQs[diapoIdx];
+  document.getElementById('diapo-num').textContent=`Question ${diapoIdx+1} / ${diapoQs.length}`;
+  const qEl=document.getElementById('diapo-q');
+  qEl.style.animation='none'; qEl.offsetHeight; qEl.style.animation='diapoIn .25s ease';
+  try{ renderKatex(qEl,q.question); }catch(e){ qEl.textContent=q.question; }
+  document.getElementById('diapo-hint').textContent=q.hint||'';
+  const timerEl=document.getElementById('diapo-timer');
+  if(cur.timer>0){
+    let t=cur.timer; timerEl.textContent=t;
+    diapoInt=setInterval(()=>{ t--; timerEl.textContent=t; if(t<=0){ clearInterval(diapoInt); diapoIdx++; showDiapoQ(); }},1000);
+  } else {
+    timerEl.textContent='Clic pour continuer';
+    document.getElementById('diapo-overlay').onclick=(e)=>{
+      if(e.target.closest('.diapo-close')) return;
+      diapoIdx++; showDiapoQ();
+    };
+  }
+}
+function closeDiapo(){
+  clearInterval(diapoInt);
+  document.getElementById('diapo-overlay').classList.remove('show');
+  document.getElementById('diapo-overlay').onclick=null;
+}
+function showResultsDirect(){
+  // Diaporama sans correction : score = questions vues
+  game.score=diapoQs.length;
+  showResults();
+}
+
+/* ══════════════════════════════════════════════
+   SUITE & RÉSULTATS
+══════════════════════════════════════════════ */
+function nextQ(){
+  game.idx++;
+  if(game.idx>=game.qs.length){ showResults(); return; }
+  // Transition invisible entre "pages"
+  const wrap=document.getElementById('game-wrap');
+  wrap.style.opacity='0';
+  setTimeout(()=>{ wrap.style.opacity='1'; showQuestion(); },120);
+}
+
+function showResults(){
+  stopTimer();
+  history.replaceState({page:'results'},'','#results');
+  const total=game.qs.length, pct=Math.round(game.score/total*100);
+  const data=[
+    {e:'😓',m:'Continue, tu vas progresser !'},
+    {e:'🙂',m:'Bien ! Encore un peu d\'entraînement.'},
+    {e:'😊',m:'Très bien ! Continue comme ça.'},
+    {e:'😃',m:'Excellent travail !'},
+    {e:'🌟',m:'Parfait ! Score maximal ! 🎉'}
+  ];
+  const lvl=Math.min(4,Math.floor(pct/25));
+  document.getElementById('r-emoji').textContent=data[lvl].e;
+  document.getElementById('r-score').textContent=game.score;
+  document.getElementById('r-total').textContent=`sur ${total} question${total>1?'s':''}`;
+  document.getElementById('r-pct').textContent=`${pct}% de bonnes réponses`;
+  document.getElementById('r-msg').textContent=data[lvl].m;
+  const bar=document.getElementById('r-bar');
+  bar.style.width='0%';
+  setTimeout(()=>bar.style.width=pct+'%',100);
+  goto('p-results');
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+renderHome();
+document.getElementById('game-wrap').style.transition='opacity .12s ease';
+</script>
+</body>
+</html>
